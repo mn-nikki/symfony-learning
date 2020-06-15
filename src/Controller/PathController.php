@@ -51,7 +51,7 @@ class PathController extends AbstractController
             'attributes' => $request->attributes->all(),
             'server' => $request->server->all(),
             'headers' => $request->headers->all(),
-            'controller' => \sprintf("Controller name: %s", __METHOD__),
+            'action' => \sprintf("Action name: %s", __METHOD__),
         ));
     }
 }
