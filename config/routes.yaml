@@ -1,3 +1,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+path_yaml:
+  path: /path/yaml
+  controller: App\Controller\PathController::yamlIndex
