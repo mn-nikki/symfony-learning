@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+  {% if(query.debug) %}
+    <h2>Query</h2>
+    {{ dump(query) }}
+    <h2>Attributes</h2>
+    {{ dump(attributes) }}
+    <h2>Server</h2>
+    {{ dump(server) }}
+    <h2>Headers</h2>
+    {{ dump(headers) }}
+  {% else %}
+    <h2>{{ controller }}</h2>
+    <p>Add get parameters ?debug to display additional information</p>
+  {% endif %}
+
+{% endblock %}

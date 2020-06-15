@@ -4,8 +4,7 @@
 namespace App\Controller;
 
 
-use App\Entity\BlogPost;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\{Request,Response};
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,12 +19,12 @@ class PathController extends AbstractController
     public function index() : Response
     {
         return $this->render('path/index.html.twig', [
-            'var' => sprintf("Hello world %s!", __METHOD__),
+            'var' => \sprintf("Hello, action name is %s!", __METHOD__),
         ]);
     }
 
     /**
-     * @Route("/path/number/{number}", name="show_number", requirements={"page"="\d+"}, methods={"GET", "HEAD"})
+     * @Route("/path/number/{number<\d+>}", name="show_number", methods={"GET", "HEAD"})
      *
      * @param int $number
      * @return Response
@@ -36,5 +35,23 @@ class PathController extends AbstractController
             'number' => $number,
             'url' => $this->generateUrl('path_index', [],UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function debug(Request $request) : Response
+    {
+        if($request->query->has('debug')) $request->query->set('debug', true);
+        else $request->query->set('debug', false);
+
+        return $this->render("path/debug.html.twig", array(
+            'query' => $request->query->all(),
+            'attributes' => $request->attributes->all(),
+            'server' => $request->server->all(),
+            'headers' => $request->headers->all(),
+            'controller' => \sprintf("Controller name: %s", __METHOD__),
+        ));
     }
 }

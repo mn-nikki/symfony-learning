@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Controller\PathController;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouteCollection;
 
 class ExtraLoader extends Loader
