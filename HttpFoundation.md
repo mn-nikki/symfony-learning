@@ -1,6 +1,8 @@
 HttpFoundation
 ==============
 
+[Статья официальной документации](https://symfony.com/doc/current/components/http_foundation.html), ещё одна полезная [статья](https://symfony.com/doc/current/introduction/http_fundamentals.html)
+
 Как нам известно, php-приложение в традиционном его понимании начинается с http-запроса и заканчивается http-ответом.
 
 Напомню, http-обмен, если его воспринимать в виде текста, выглядит примерно так
