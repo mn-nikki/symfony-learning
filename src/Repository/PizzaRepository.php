@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Pizza;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\{ArrayCollection, Collection};
+use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,15 @@ class PizzaRepository extends ServiceEntityRepository
         parent::__construct($registry, Pizza::class);
     }
 
-    // /**
-    //  * @return Pizza[] Returns an array of Pizza objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function withNIngredients(int $n): Collection
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $queryBuilder = $this->createQueryBuilder('pizza')
+            ->join('pizza.parts', 'parts');
+        $queryBuilder->having($queryBuilder->expr()->eq($queryBuilder->expr()->count('parts.id'), ':count'))
+            ->setParameter('count', $n, ParameterType::INTEGER)
+            ->groupBy('pizza.id')
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Pizza
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return new ArrayCollection($queryBuilder->getQuery()->getResult() ?? []);
     }
-    */
 }

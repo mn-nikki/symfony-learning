@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+  <h1>Pizza!</h1>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Parts</th>
+      <th>Diameter</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for pizza in data %}
+      <tr>
+        <td>{{ pizza.title }}</td>
+        <td>
+          <ul class="list-unstyled">
+            {% for part in pizza.parts %}
+              <li>{{ part.ingredient.title }} ({{ part.weight | number_format }})</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td>{{ pizza.diameter }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

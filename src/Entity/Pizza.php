@@ -35,7 +35,7 @@ class Pizza
     private ?int $diameter;
 
     /**
-     * @ORM\OneToMany(targetEntity=ReceiptPart::class, mappedBy="pizza")
+     * @ORM\OneToMany(targetEntity=ReceiptPart::class, mappedBy="pizza", cascade={"persist"}, fetch="EAGER")
      */
     private Collection $parts;
 
