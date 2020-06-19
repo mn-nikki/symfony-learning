@@ -1,11 +1,9 @@
 <?php declare(strict_types=1);
 /**
- * 17.06.2020
+ * 17.06.2020.
  */
 
-
 namespace App\Controller;
-
 
 use App\Repository\PizzaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +23,7 @@ class PizzaController extends AbstractController
      * @Route(path="/pizza/{page<\d+>?1}")
      *
      * @param int|null $page
+     *
      * @return Response
      */
     public function index(?int $page = null): Response
@@ -38,6 +37,7 @@ class PizzaController extends AbstractController
      * @Route(path="/pizza/parts/{count<\d+>}")
      *
      * @param int $count
+     *
      * @return Response
      */
     public function withIngredients(int $count): Response
