@@ -1,0 +1,5 @@
+pizza.title: __pizza.title
+pizza.name: __pizza.name
+pizza.parts: __pizza.parts
+pizza.diameter: __pizza.diameter
+value_with_variable: 'Привет, {name}'
