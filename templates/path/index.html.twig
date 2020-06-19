@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+  <h1>Models</h1>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Model</th>
+      <th>Manufacture</th>
+      <th>Colors</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for model in data %}
+      <tr>
+        <td>{{ model.name }}</td>
+        <td>
+            {{ model.manufacture.name }}
+        </td>
+        <td>
+          <ul class="list-unstyled">
+            {% for color in model.colors%}
+              <li>{{ color.name }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
