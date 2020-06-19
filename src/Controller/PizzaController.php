@@ -11,14 +11,17 @@ use App\Repository\PizzaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PizzaController extends AbstractController
 {
     private PizzaRepository $pizzaRepository;
+    private TranslatorInterface $translator;
 
-    public function __construct(PizzaRepository $pizzaRepository)
+    public function __construct(PizzaRepository $pizzaRepository, TranslatorInterface $translator)
     {
         $this->pizzaRepository = $pizzaRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -31,6 +34,7 @@ class PizzaController extends AbstractController
     {
         return $this->render('pizza/index.html.twig', [
             'data' => $this->pizzaRepository->findAll(),
+            'title' => $this->translator->trans('pizza.title')
         ]);
     }
 

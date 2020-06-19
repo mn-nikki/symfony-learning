@@ -11,6 +11,7 @@
     "symfony/framework-bundle": "5.1.*",
     "symfony/orm-pack": "^1.0",
     "symfony/translation": "5.1.*",
+    "symfony/twig-pack": "^1.0",
     "symfony/yaml": "5.1.*"
   },
   "require-dev": {
