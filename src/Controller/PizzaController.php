@@ -5,18 +5,21 @@
 
 namespace App\Controller;
 
-use App\Repository\PizzaRepository;
+use App\Service\PizzaManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PizzaController extends AbstractController
 {
-    private PizzaRepository $pizzaRepository;
+    private TranslatorInterface $translator;
+    private PizzaManagerInterface $manager;
 
-    public function __construct(PizzaRepository $pizzaRepository)
+    public function __construct(PizzaManagerInterface $manager, TranslatorInterface $translator)
     {
-        $this->pizzaRepository = $pizzaRepository;
+        $this->translator = $translator;
+        $this->manager = $manager;
     }
 
     /**
@@ -29,7 +32,8 @@ class PizzaController extends AbstractController
     public function index(?int $page = null): Response
     {
         return $this->render('pizza/index.html.twig', [
-            'data' => $this->pizzaRepository->findAll(),
+            'data' => $this->manager->getRepository()->findAll(),
+            'title' => $this->translator->trans('pizza.title'),
         ]);
     }
 
@@ -43,7 +47,7 @@ class PizzaController extends AbstractController
     public function withIngredients(int $count): Response
     {
         return $this->render('pizza/index.html.twig', [
-            'data' => $this->pizzaRepository->withNIngredients($count),
+            'data' => $this->manager->getRepository()->withNIngredients($count),
         ]);
     }
 }
