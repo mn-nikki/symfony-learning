@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
     {
         $this->makeIngredients($manager);
 
-        for ($i = self::FINAL_COUNT; $i >= 0; $i--) {
+        for ($i = self::FINAL_COUNT; $i >= 0; --$i) {
             $pizza = (new Pizza())
                 ->setTitle($this->faker->colorName)
                 ->setDescription($this->faker->sentence)
@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
     protected function addRandomParts(Pizza $pizza): void
     {
         $count = \random_int(2, 9);
-        for ($i = $count; $i >= 0; $i--) {
+        for ($i = $count; $i >= 0; --$i) {
             $ingredient = $this->faker->randomElement($this->ingredients);
             $part = $this->makeReceiptPart($ingredient);
             $pizza->addPart($part);
