@@ -35,6 +35,7 @@ class ReceiptPartGenerateService implements ReceiptPartGenerateServiceInterface
 
     /**
      * @param string $ingredient
+     *
      * @return ReceiptPart
      */
     public function generate(string $ingredient): ReceiptPart
