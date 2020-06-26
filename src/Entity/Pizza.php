@@ -6,6 +6,7 @@ use App\Repository\PizzaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PizzaRepository::class)
@@ -21,21 +22,25 @@ class Pizza
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6)
      */
-    private ?string $title;
+    private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private ?string $description;
+    private ?string $description = null;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
-    private ?int $diameter;
+    private ?int $diameter = null;
 
     /**
      * @ORM\OneToMany(targetEntity=ReceiptPart::class, mappedBy="pizza", cascade={"persist"}, fetch="EAGER")
+     * @Assert\Valid()
      */
     private Collection $parts;
 
