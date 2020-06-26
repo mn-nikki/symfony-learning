@@ -4,9 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Model;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\ParameterType;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,15 +21,20 @@ class ModelRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Collection
+     * @param int $page
+     * @param int $count
+     *
+     * @return Paginator
      */
-    public function getModelsWithParams(): Collection
+    public function getModelsWithParams(int $page, int $count = 10): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('model')
             ->join('model.manufacture', 'manufacture')
             ->join('model.colors', 'colors')
+            ->setFirstResult($count * ($page - 1))
+            ->setMaxResults($count)
         ;
 
-        return new ArrayCollection($queryBuilder->getQuery()->getResult() ?? []);
+        return new Paginator($queryBuilder->getQuery());
     }
 }

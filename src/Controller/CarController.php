@@ -17,13 +17,21 @@ class CarController extends AbstractController
     }
 
     /**
-     * @Route(path="/path/models")
+     * @Route(path="/path/models/{page<\d+>?1}")
+     *
+     * @param int $page
+     * @param int $count
+     *
      * @return Response
      */
-    public function index(): Response
+    public function index(int $page = 1, int $count = 10): Response
     {
+        $models = $this->modelRep->getModelsWithParams($page, $count);
+
         return $this->render('path/index.html.twig', [
-            'data' => $this->modelRep->getModelsWithParams(),
+            'data' => $models,
+            'page' => $page,
+            'maxPage' => \ceil($models->count() / $count),
         ]);
     }
 }

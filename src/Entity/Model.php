@@ -30,12 +30,12 @@ class Model
     private ?int $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Manufacture::class, inversedBy="model", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Manufacture::class, inversedBy="model", cascade={"persist"}, fetch="EAGER")
      */
     private ?Manufacture $manufacture;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="Models", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="Models", cascade={"persist"}, fetch="EAGER")
      */
     private Collection $colors;
 

@@ -2,13 +2,20 @@
 
 {% block body %}
 <div class="container">
-  <h1>Models</h1>
+  <h1>{{ 'model.title' | trans }}</h1>
+  <p>Страница <b>{{ page }}</b> из <b>{{ maxPage }}</b></p>
+  {% if(maxPage > 1) %}
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="{{ path('app_car_index', {page: page-1 < 1 ? 1 : page - 1}) }}">Предыдущая</a></li>
+      <li class="page-item"><a class="page-link" href="{{ path('app_car_index', {page: page+1 < 1 ? 1 : page + 1}) }}">Следующая</a></li>
+    </ul>
+  {% endif %}
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th>Model</th>
-      <th>Manufacture</th>
-      <th>Colors</th>
+      <th>{{ 'model.name' | trans }}</th>
+      <th>{{ 'model.manufacture' | trans }}</th>
+      <th>{{ 'model.colors' | trans }}</th>
     </tr>
     </thead>
     <tbody>
