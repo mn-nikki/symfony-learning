@@ -16,6 +16,7 @@
       <th>{{ 'model.name' | trans }}</th>
       <th>{{ 'model.manufacture' | trans }}</th>
       <th>{{ 'model.colors' | trans }}</th>
+      <th>{{ 'model.price' | trans }}</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
             {% endfor %}
           </ul>
         </td>
+        <td>{{ model.price }}</td>
       </tr>
     {% endfor %}
     </tbody>
