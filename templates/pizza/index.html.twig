@@ -3,35 +3,35 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-<div class="container">
-  <h1>{{ title }}!</h1>
-  <hr>
-  {{ 'value_with_variable' | trans({ 'name': 'Andrew' }) }}
-  <hr>
+  <div class="container">
+    <h1>{{ title }}!</h1>
+    <hr>
+    {{ 'value_with_variable' | trans({ 'name': 'Andrew' }) }}
+    <hr>
 
-  <table class="table table-condensed table-striped">
-    <thead>
-    <tr>
-      <th>{{ 'pizza.name' | trans }}</th>
-      <th>{{ 'pizza.parts' | trans }}</th>
-      <th>{{ 'pizza.diameter' | trans }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for pizza in data %}
+    <table class="table table-condensed table-striped">
+      <thead>
       <tr>
-        <td>{{ pizza.title }}</td>
-        <td>
-          <ul class="list-unstyled">
-            {% for part in pizza.parts %}
-              <li>{{ part.ingredient.title }} ({{ part.weight | number_format }})</li>
-            {% endfor %}
-          </ul>
-        </td>
-        <td>{{ pizza.diameter }}</td>
+        <th>{{ 'pizza.name' | trans }}</th>
+        <th>{{ 'pizza.parts' | trans }}</th>
+        <th>{{ 'pizza.diameter' | trans }}</th>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+      {% for pizza in data %}
+        <tr>
+          <td><a href="{{ path('pizza_view', {'id': pizza.id}) }}">{{ pizza.title }}</a></td>
+          <td>
+            <ul class="list-unstyled">
+              {% for part in pizza.parts %}
+                <li>{{ part.ingredient.title }} ({{ part.weight | number_format }})</li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>{{ pizza.diameter }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
