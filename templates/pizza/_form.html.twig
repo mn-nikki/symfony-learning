@@ -1,0 +1,15 @@
+<div id="pizza_whole_form">
+  {{ form_errors(form) }}
+
+  {{ form_start(form) }}
+
+  {{ form_row(form.title) }}
+  {{ form_row(form.description) }}
+  {{ form_row(form.diameter) }}
+
+  <h3>{{ 'Parts' | trans }}</h3>
+  {{ form_row(form.parts) }}
+
+  <button class="btn btn-primary" type="submit">{{ 'Save' | trans }}</button>
+  {{ form_end(form) }}
+</div>

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReceiptPartRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReceiptPartRepository::class)
@@ -19,12 +20,14 @@ class ReceiptPart
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $weight;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ingredient::class, inversedBy="receiptParts")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $ingredient;
 
