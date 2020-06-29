@@ -1,0 +1,27 @@
+<script>
+  var collectionHolder
+  var addTagButton = $('<button type="button" class="add_tag_link btn btn-secondary">{{ 'Add element' | trans }}</button>')
+  var newLinkElement = $('<fieldset class="form-group"></fieldset>').append(addTagButton)
+
+  document.addEventListener('DOMContentLoaded', () => {
+    collectionHolder = $('div#pizza_parts')
+    collectionHolder.append(newLinkElement)
+    collectionHolder.data('index', collectionHolder.find('input').length)
+
+    addTagButton.on('click', function (e) {
+      addTagForm(collectionHolder, newLinkElement)
+    })
+  })
+
+  function addTagForm(collectionHolder, newLinkElement) {
+    const prototype = collectionHolder.data('prototype');
+    const index = collectionHolder.data('index');
+    console.log(collectionHolder.data('prototype'))
+
+    const newForm = prototype.replace(/__name__/g, index);
+    collectionHolder.data('index', index + 1);
+
+    var newFormElement = $('<fieldset class="form-group"></fieldset>').append(newForm);
+    newLinkElement.before(newFormElement);
+  }
+</script>
