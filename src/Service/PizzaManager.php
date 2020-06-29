@@ -9,6 +9,7 @@ use App\Service\Exception\WrongParameterException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 use Psr\Log\LoggerInterface;
 
@@ -17,6 +18,10 @@ use Psr\Log\LoggerInterface;
  */
 class PizzaManager implements PizzaManagerInterface
 {
+    public const DEFAULT_ORDER_PROPERTY = 'id';
+    public const DEFAULT_ORDER_DIRECTION = 'desc';
+    public const DEFAULT_PAGE_SIZE = 50;
+
     private EntityManagerInterface $em;
     private PizzaRepository $repository;
     private LoggerInterface $logger;
@@ -42,6 +47,32 @@ class PizzaManager implements PizzaManagerInterface
     public function get($id): ?Pizza
     {
         return $this->repository->find($id);
+    }
+
+    /**
+     * @param int $page Page number
+     * @param int|null $pageSize Count of page elements
+     * @param null|string $orderBy Sort by property
+     * @param null|string $order Sort order
+     * @return Paginator
+     */
+    public function pager(int $page = 1, ?int $pageSize = null, ?string $orderBy = null, ?string $order = null): Paginator
+    {
+        if ($orderBy === null) {
+            $orderBy = self::DEFAULT_ORDER_PROPERTY;
+        } elseif (!\array_key_exists($orderBy, \array_flip($this->getProperties()))) {
+            throw new WrongParameterException(\sprintf('Property \'%s\' not exists in \'%s\'', $orderBy, Pizza::class));
+        }
+
+        $pageSize ??= self::DEFAULT_PAGE_SIZE;
+        $order ??= self::DEFAULT_ORDER_DIRECTION;
+        $q = $this->repository->createQueryBuilder('p')
+            ->orderBy(\sprintf('p.%s', $orderBy), $order)
+            ->setFirstResult($pageSize * ($page - 1))
+            ->setMaxResults($pageSize)
+        ;
+
+        return new Paginator($q->getQuery());
     }
 
     /**
