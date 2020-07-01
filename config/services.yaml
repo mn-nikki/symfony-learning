@@ -25,3 +25,25 @@ services:
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
+
+  pizza.manager:
+    class: App\Service\PizzaManager
+    public: true
+    autowire: true
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@App\Repository\PizzaRepository'
+      - '@logger'
+
+  App\Service\PizzaManagerInterface: '@pizza.manager'
+
+  part.generator:
+    public: true
+    autowire: true
+    class: App\Service\ReceiptPartGenerateService
+
+  ReceiptPartGenerateServiceInterface: '@part.generator'
+
+  App\EventListeners\PizzaCreatedListener:
+    tags:
+      - {name: kernel.event_listener, event: pizza.created, method: onCreate}

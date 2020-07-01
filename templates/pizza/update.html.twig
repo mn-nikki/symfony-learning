@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <h1>{{ 'Update {title}' | trans({'{title}': pizza.title}) }}</h1>
+    {{ include('pizza/_form.html.twig') }}
+    <p class="text-right"><a href="{{ path('pizza_main') }}">{{ 'Back to list' | trans }}</a></p>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ include('pizza/_form.js.html.twig') }}
+{% endblock %}
