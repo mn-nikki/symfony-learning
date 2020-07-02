@@ -17,7 +17,7 @@ class ReceiptPartType extends AbstractType
         $builder
             ->add('ingredient', EntityType::class, [
                 'class' => Ingredient::class,
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ])
             ->add('weight', NumberType::class);
     }

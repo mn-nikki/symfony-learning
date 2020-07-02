@@ -1,13 +1,10 @@
 <?php declare(strict_types=1);
 
-
 namespace App\Controller\Api;
-
 
 use App\Service\PizzaManager;
 use App\Service\PizzaManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +34,8 @@ class PizzaController extends AbstractController
      * @Route("index/{page<\d+>}", name="api_index")
      *
      * @param Request $request
-     * @param int $page
+     * @param int     $page
+     *
      * @return Response
      */
     public function index(Request $request, int $page = 1): Response

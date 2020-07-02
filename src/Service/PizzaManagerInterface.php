@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Pizza;
+use App\Repository\PizzaRepository;
 use App\Service\Exception\StorageException;
 use App\Service\Exception\WrongParameterException;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +16,7 @@ use Doctrine\Persistence\ObjectRepository;
 interface PizzaManagerInterface
 {
     /**
-     * @return ObjectRepository
+     * @return ObjectRepository|PizzaRepository
      */
     public function getRepository(): ObjectRepository;
 
@@ -29,10 +30,11 @@ interface PizzaManagerInterface
     public function get($id): ?Pizza;
 
     /**
-     * @param int $page
-     * @param int|null $pageSize
+     * @param int         $page
+     * @param int|null    $pageSize
      * @param string|null $orderBy
      * @param string|null $order
+     *
      * @return Paginator
      */
     public function pager(int $page = 1, int $pageSize = null, string $orderBy = null, string $order = null): Paginator;
