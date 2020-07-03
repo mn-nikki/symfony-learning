@@ -47,3 +47,8 @@ services:
   App\EventListeners\PizzaCreatedListener:
     tags:
       - {name: kernel.event_listener, event: pizza.created, method: onCreate}
+
+  App\Service\RemoteRequestInterface:
+    class: App\Service\RemoteRequestService
+    arguments:
+      $baseUrl: 'https://httpbin.org/'
