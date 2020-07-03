@@ -171,7 +171,7 @@ bin/console cache:clear && bin/console make:migration
 
 После этого вы можете залогинится с реквизитами только что созданного пользователя.
 
-![User is logged in](https://git.crtweb.ru/academy-of-quality/symfony-learning/-/raw/master/doc-resources/images/logged-user.png)
+![User is logged in](https://git.crtweb.ru/academy-of-quality/symfony-learning/-/raw/1d27b26025ebd1ff47f1c6cf47cd9f4fbe8c2552/doc-resources/images/logged-user.png?inline=false)
 
 Авторизация (проверка прав доступа к ресурсу)
 ---------------------------------------------
