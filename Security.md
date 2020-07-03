@@ -171,5 +171,90 @@ bin/console cache:clear && bin/console make:migration
 
 После этого вы можете залогинится с реквизитами только что созданного пользователя.
 
-![User is logged in](https://git.crtweb.ru/academy-of-quality/symfony-learning/-/raw/master/doc-resources/images/logged-user.png)
+![User is logged in](https://git.crtweb.ru/academy-of-quality/symfony-learning/-/raw/1d27b26025ebd1ff47f1c6cf47cd9f4fbe8c2552/doc-resources/images/logged-user.png?inline=false)
 
+Авторизация (проверка прав доступа к ресурсу)
+---------------------------------------------
+
+Сам security-компонент предоставляет базовую функциональность авторизации на основе пользовательских ролей: `UserInterface` содержит метод для получения массива ролей, настройка `access_control` в `security.yaml` проверяет именно эти роли.
+
+```yaml
+  access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/profile, roles: ROLE_USER }
+```
+
+Таким образом к роутам с путём `/admin` (с любым продолжением) будет разрешен доступ только для тех пользователей, у которых в массиве ролей есть `ROLE_ADMIN`; 
+
+Для простых случаев, когда приложение не использует сложное разграничение доступа к ресурсам, этого вполне достаточно. Для более сложных кейсов есть механизм Security Voters.
+
+### Security Voters
+
+В общем, этот механизм неявно работает даже при простом определении ролей, но его возможности гораздо шире, чем проверка наличия элемена в массиве. Вы можете создать сколько угодно собственных Security Voter, и использовать их по мере надобности.
+
+```php
+namespace App\Security;
+
+use App\Entity\Pizza;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+
+class ViewVoter extends Voter
+{
+    protected function supports(string $attribute, $subject)
+    {
+        return $subject instanceof Pizza;
+    }
+
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    {
+        $user = $token->getUser();
+        if($subject->getOwner() === $user) {
+            return Voter::ACCESS_GRANTED;
+        }
+
+        return Voter::ACCESS_DENIED;
+    }
+}
+```
+
+Теперь мы можем использовать проверку доступа в контроллере:
+
+```php
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class MainController extends AbstractController
+{
+    public function view(?int $id = null): Response
+    {
+        $pizza = $this->getDoctrine()->getRepository(\App\Repository\PizzaRepository::class)
+            ->find($id);
+        // Check if entity found, etc…
+
+        $this->denyAccessUnlessGranted('view', $pizza);
+
+        return $this->render('pizza/view.html.twig', ['item' => $pizza]);
+    }
+}
+```
+
+В этом примере мы предположили, что в `Pizza` есть атрибут `owner`, в котором содержится связь с пользователем, создавшем эту сущность. Таким образом, в `ViewVoter` мы проверяем, является ли пользователь, создавший сущность, текущим пользователем, который отправил запрос, и разрешаем или запрещаем доступ.
+
+### Стратегии согласия
+
+Классов Voter может быть сколько угодно, и каждый из них в результате проверки возвращает отдно из трёх значений: 1, -1 или 0, собственно, за, против или воздержался. Окончательное решение, давать доступ или нет, принимает security-компонент на основе стратегии.
+
+```yaml
+security:
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: false
+``` 
+
+Стратегия может быть:
+
+- `affirmative` (используется по умолчанию) — доступ разрешается если по меньшей мере один из voter-ов вернул Access Granted;
+- `consensus` — доступ разрешается, если большинство voter-ов вернули Access Granted;
+- `unanimous` — доступ разрешается, если ни один из voter-ов не вернул Access Denied;
+- `priority` — разрешение или запрещение доступа на основе решения первого (по приоритету сервисов, service priority) voter-а
