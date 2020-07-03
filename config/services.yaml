@@ -38,7 +38,7 @@ services:
   App\Service\PizzaManagerInterface: '@pizza.manager'
 
   part.generator:
-    public: true
+    public: false
     autowire: true
     class: App\Service\ReceiptPartGenerateService
 

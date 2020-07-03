@@ -13,9 +13,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class RemoteRequestService implements RemoteRequestInterface
 {
     private HttpClientInterface $httpClient;
-    private string $baseUrl;
+    private ?string $baseUrl;
 
-    public function __construct(HttpClientInterface $httpClient, string $baseUrl)
+    public function __construct(HttpClientInterface $httpClient, string $baseUrl = null)
     {
         $this->httpClient = $httpClient;
         $this->baseUrl = $baseUrl;
