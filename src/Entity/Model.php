@@ -6,6 +6,7 @@ use App\Repository\ModelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ModelRepository::class)
@@ -17,25 +18,26 @@ class Model
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $price;
+    private ?int $price = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Manufacture::class, inversedBy="model", cascade={"persist"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity=Manufacture::class, inversedBy="model", cascade={"persist"})
      */
-    private ?Manufacture $manufacture;
+    private ?Manufacture $manufacture = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="Models", cascade={"persist"}, fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="Models", cascade={"persist"})
      */
     private Collection $colors;
 

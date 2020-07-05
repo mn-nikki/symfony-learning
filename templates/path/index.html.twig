@@ -6,10 +6,11 @@
   <p>Страница <b>{{ page }}</b> из <b>{{ maxPage }}</b></p>
   {% if(maxPage > 1) %}
     <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="{{ path('app_car_index', {page: page-1 < 1 ? 1 : page - 1}) }}">Предыдущая</a></li>
-      <li class="page-item"><a class="page-link" href="{{ path('app_car_index', {page: page+1 < 1 ? 1 : page + 1}) }}">Следующая</a></li>
+      <li class="page-item"><a class="page-link" href="{{ path('model_index', {page: page-1 < 1 ? 1 : page - 1}) }}">{{ 'paginate.prev' | trans }}</a></li>
+      <li class="page-item"><a class="page-link" href="{{ path('model_index', {page: page+1 < 1 ? 1 : page + 1}) }}">{{ 'paginate.next' | trans }}</a></li>
     </ul>
   {% endif %}
+  <div class="text-right mb-5"><a class="btn btn-secondary" href="{{ path("model_create") }}">{{ 'btn.new' | trans }}</a></div>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
@@ -22,7 +23,7 @@
     <tbody>
     {% for model in data %}
       <tr>
-        <td>{{ model.name }}</td>
+        <td><a href="{{ path('model_view', { 'id': model.id }) }}">{{ model.name }}</a></td>
         <td>
             {{ model.manufacture.name }}
         </td>
@@ -33,7 +34,7 @@
             {% endfor %}
           </ul>
         </td>
-        <td>{{ model.price }}</td>
+        <td>{{ model.price | number_format(0, '', ' ') }} Р</td>
       </tr>
     {% endfor %}
     </tbody>

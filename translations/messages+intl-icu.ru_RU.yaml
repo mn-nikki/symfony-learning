@@ -1,7 +1,8 @@
-pizza.title: Пицца
-pizza.name: Наименование
-pizza.parts: Ингредиенты
-pizza.diameter: Диаметр
+pizza:
+  title: Пицца
+  name: Наименование
+  parts: Ингредиенты
+  diameter: Диаметр
 value_with_variable: 'Привет, {name}'
 
 plural_object: >-
@@ -14,8 +15,18 @@ plural_object: >-
   }
 
 model:
-  title: Таблица моделей
+  title: Список Моделей
   name: Модель
   manufacture: Производитель
   colors: Цвета
   price: Цена
+btn:
+  back: Назад
+  update: Изменить
+  save: Сохранить
+  add: Добавить
+  new: Новая модель
+  delete: Удалить
+paginate:
+  prev: Предыдущая
+  next: Следующая

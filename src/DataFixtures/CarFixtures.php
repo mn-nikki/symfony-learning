@@ -13,7 +13,7 @@ use Faker\UniqueGenerator;
 
 class CarFixtures extends Fixture
 {
-    protected const FINAL_COUNT = 20;
+    protected const FINAL_COUNT = 50;
 
     /**
      * @var Generator|UniqueGenerator
@@ -21,20 +21,19 @@ class CarFixtures extends Fixture
     private $faker;
 
     /**
-     * @var array|string[]
+     * @var array|string
      */
-    private static array $colorNames = [
-        'Красный',
-        'Синий',
-        'Зеленый',
-        'Черный',
-        'Белый',
-        'Серый',
-        'Желтый',
-        'Оранжевый',
-        'Голубой',
-        'Металлик',
-    ];
+    private array $colorNames = [];
+
+    /**
+     * @var array|string
+     */
+    private array $manufactureNames = [];
+
+    /**
+     * @var array|Color
+     */
+    private array $colors = [];
 
     /**
      * CarFixtures constructor.
@@ -46,11 +45,19 @@ class CarFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = self::FINAL_COUNT; $i >= 0; --$i) {
+        $this->makeColors($manager);
+
+        while (\count($this->manufactureNames) !== self::FINAL_COUNT) {
             $name = $this->faker->state;
-            $manufacture = (new Manufacture())
-                ->setName($name)
-            ;
+
+            if (\in_array($name, $this->manufactureNames)) {
+                continue;
+            } else {
+                $manufacture = (new Manufacture())
+                    ->setName($name)
+                ;
+                $this->manufactureNames[] = $name;
+            }
             $this->addRandomModels($manager, $manufacture);
             $manager->persist($manufacture);
         }
@@ -74,14 +81,34 @@ class CarFixtures extends Fixture
         $manager->flush();
     }
 
+    protected function makeColors(ObjectManager $manager): void
+    {
+        while (\count($this->colorNames) !== 50) {
+            $name = $this->faker->colorName;
+            if (\in_array($name, $this->colorNames)) {
+                continue;
+            } else {
+                $color = (new Color())
+                    ->setName($name)
+                ;
+                $manager->persist($color);
+                $this->colors[] = $color;
+                $this->colorNames[] = $name;
+            }
+        }
+
+        $manager->flush();
+    }
+
     protected function addRandomColor(ObjectManager $manager, Model $model): void
     {
         $count = \random_int(3, 7);
+
         for ($i = $count; $i >= 0; --$i) {
-            $color = (new Color())
-                ->setName($this->faker->randomElement(self::$colorNames))
-                ->addModel($model)
-            ;
+            $randomKey = \random_int(0, 9);
+            $color = $this->colors[$randomKey];
+            $color->addModel($model);
+
             $model->addColor($color);
             $manager->persist($color);
         }

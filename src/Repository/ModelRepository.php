@@ -29,8 +29,6 @@ class ModelRepository extends ServiceEntityRepository
     public function getModelsWithParams(int $page, int $count = 10): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('model')
-            ->join('model.manufacture', 'manufacture')
-            ->join('model.colors', 'colors')
             ->setFirstResult($count * ($page - 1))
             ->setMaxResults($count)
         ;
