@@ -6,8 +6,8 @@ use App\Repository\ModelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,6 +20,7 @@ class Model
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      * @Groups({"display"})
+     * @SWG\Property(type="integer", description="The unique identifier of the Model.")
      */
     private ?int $id = null;
 

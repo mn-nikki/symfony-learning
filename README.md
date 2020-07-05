@@ -19,3 +19,4 @@ Academy of Quality > Symfony Learning
 3. Добавлены Translations.
 4. Добавлен сервис и формы для CRUD операций с моделями.
 5. Добавлены методы для работы с Api
+6. Добавлен Swagger UI для работы с Api

@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Model;
 use App\Service\CarManagerInterface;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,6 +57,11 @@ class CarController
 
     /**
      * @Route("model/show/{id<\d+>?1}", name="api_model_show")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Get Model by id",
+     *     @\Nelmio\ApiDocBundle\Annotation\Model(type=Model::class)
+     * )
      *
      * @param int $id
      *
@@ -83,6 +89,11 @@ class CarController
 
     /**
      * @Route("model/validate", name="api_json_validate", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Validate json data",
+     *     @\Nelmio\ApiDocBundle\Annotation\Model(type=Model::class)
+     * )
      *
      * @param Request $request
      *
@@ -90,6 +101,10 @@ class CarController
      */
     public function validate(Request $request): Response
     {
+        if (!$request->query->has('json')) {
+            throw new \Exception('The request must have a json parameter');
+        }
+
         $format = 'json';
         $data = $this->serializer->deserialize($request->get('json'), Model::class, $format);
         $errors = $this->validator->validate($data);
