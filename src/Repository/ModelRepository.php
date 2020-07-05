@@ -26,7 +26,7 @@ class ModelRepository extends ServiceEntityRepository
      *
      * @return Paginator
      */
-    public function getModelsWithParams(int $page, int $count = 10): Paginator
+    public function getPager(int $page, int $count = 10): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('model')
             ->setFirstResult($count * ($page - 1))

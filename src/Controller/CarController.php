@@ -29,7 +29,7 @@ class CarController extends AbstractController
      */
     public function index(int $page = 1, int $count = 10): Response
     {
-        $models = $this->manager->getRepository()->getModelsWithParams($page, $count);
+        $models = $this->manager->getRepository()->getPager($page, $count);
 
         return $this->render('path/index.html.twig', [
             'data' => $models,

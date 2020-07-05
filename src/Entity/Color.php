@@ -6,6 +6,7 @@ use App\Repository\ColorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ColorRepository::class)
@@ -16,13 +17,15 @@ class Color
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"display"})
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"display"})
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Model::class, mappedBy="colors", cascade={"persist"})

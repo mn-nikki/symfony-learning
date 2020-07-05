@@ -17,3 +17,6 @@ framework:
   validation:
     enabled: true
     enable_annotations: true
+
+  serializer:
+    max_depth_handler: 'App\Utils\MaxDepthHandler'

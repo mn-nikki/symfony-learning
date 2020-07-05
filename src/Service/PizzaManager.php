@@ -50,10 +50,11 @@ class PizzaManager implements PizzaManagerInterface
     }
 
     /**
-     * @param int $page Page number
-     * @param int|null $pageSize Count of page elements
-     * @param null|string $orderBy Sort by property
-     * @param null|string $order Sort order
+     * @param int         $page     Page number
+     * @param int|null    $pageSize Count of page elements
+     * @param string|null $orderBy  Sort by property
+     * @param string|null $order    Sort order
+     *
      * @return Paginator
      */
     public function pager(int $page = 1, ?int $pageSize = null, ?string $orderBy = null, ?string $order = null): Paginator
