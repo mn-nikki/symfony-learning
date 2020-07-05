@@ -6,6 +6,8 @@ use App\Repository\PizzaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,6 +19,7 @@ class Pizza
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"index"})
      */
     private ?int $id = null;
 
@@ -24,23 +27,27 @@ class Pizza
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min=6)
+     * @Groups({"index"})
      */
     private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"index"})
      */
     private ?string $description = null;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Groups({"index"})
      */
     private ?int $diameter = null;
 
     /**
      * @ORM\OneToMany(targetEntity=ReceiptPart::class, mappedBy="pizza", cascade={"persist"}, fetch="EAGER")
      * @Assert\Valid()
+     * @Groups({"index"})
      */
     private Collection $parts;
 

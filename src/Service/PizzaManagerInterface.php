@@ -6,6 +6,7 @@ use App\Entity\Pizza;
 use App\Service\Exception\StorageException;
 use App\Service\Exception\WrongParameterException;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -26,6 +27,15 @@ interface PizzaManagerInterface
      * @return Pizza|null
      */
     public function get($id): ?Pizza;
+
+    /**
+     * @param int $page
+     * @param int|null $pageSize
+     * @param string|null $orderBy
+     * @param string|null $order
+     * @return Paginator
+     */
+    public function pager(int $page = 1, int $pageSize = null, string $orderBy = null, string $order = null): Paginator;
 
     /**
      * Find bunch of Pizzas by property.
