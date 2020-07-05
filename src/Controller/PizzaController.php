@@ -12,17 +12,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PizzaController extends AbstractController
 {
     private TranslatorInterface $translator;
     private PizzaManagerInterface $manager;
+    /**
+     * @var Security
+     */
+    private Security $security;
 
-    public function __construct(PizzaManagerInterface $manager, TranslatorInterface $translator)
+    public function __construct(PizzaManagerInterface $manager, TranslatorInterface $translator, Security $security)
     {
         $this->translator = $translator;
         $this->manager = $manager;
+        $this->security = $security;
     }
 
     /**
@@ -35,7 +41,7 @@ class PizzaController extends AbstractController
     public function index(?int $page = null): Response
     {
         return $this->render('pizza/index.html.twig', [
-            'data' => $this->manager->getRepository()->findAll(),
+            'data' => $this->manager->pager($page),
             'title' => $this->translator->trans('pizza.title'),
         ]);
     }
@@ -51,6 +57,7 @@ class PizzaController extends AbstractController
     {
         return $this->render('pizza/index.html.twig', [
             'data' => $this->manager->getRepository()->withNIngredients($count),
+            'title' => $this->translator->trans('pizza.title'),
         ]);
     }
 
