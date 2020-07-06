@@ -1,0 +1,29 @@
+security:
+  # Password encoders
+  encoders:
+    App\Entity\SiteUser: # encoder for SiteUser entity
+      algorithm: auto
+  providers:
+    app_user_provider:   # provider name (may be any string)
+      entity:            # provider type (`entity` is an internal type)
+        class: App\Entity\SiteUser
+        property: email
+  firewalls:
+    dev:                  # Firewall ID
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      pattern: /
+      anonymous: true
+      lazy: true
+      provider: app_user_provider
+      guard:
+        authenticators:
+          - App\Security\AppFormAuthenticator
+      logout:
+        path: app_logout
+        target: pizza_main
+
+  access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/profile, roles: ROLE_USER }
