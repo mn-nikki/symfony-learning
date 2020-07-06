@@ -1,6 +1,32 @@
 version: '3.7'
 
 services:
+  webapp:
+    image: nginx:alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - .:/var/www/app:cached
+    environment:
+      NGINX_ENVSUBST_TEMPLATE_DIR: /etc/nginx/templates
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: .nginx
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/conf.d
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        UID: ${DUID}
+        GID: ${DGID}
+    volumes:
+      - .:/var/www/app:cached
+
+  redis:
+    image: redis:latest
+
   database:
     image: postgres:11-alpine
     ports:

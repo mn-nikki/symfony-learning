@@ -17,4 +17,4 @@ Academy of Quality > Symfony Learning
 1. [Symfony Security — аутентификация / авторизация](Security.md)
 1. [Конфигурация фреймворка и сервисов, основанная на окружении](Configuration.md)
 1. [Кэширование внутренних данных](Cache.md)
-1. [Фсинхронные вызовы, очередь. Symfony Messenger](Messenger.md)
+1. [Асинхронные вызовы, очередь. Symfony Messenger](Messenger.md)

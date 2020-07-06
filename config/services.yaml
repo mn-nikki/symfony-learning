@@ -52,3 +52,9 @@ services:
     class: App\Service\RemoteRequestService
     arguments:
       $baseUrl: 'https://httpbin.org/'
+
+  app.cache.redis_provider:
+    class: Redis
+    factory: ['Symfony\Component\Cache\Adapter\RedisAdapter', 'createConnection']
+    arguments:
+      - '%env(REDIS_DSN)%'
