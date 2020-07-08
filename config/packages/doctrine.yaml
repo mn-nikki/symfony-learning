@@ -15,3 +15,12 @@ doctrine:
         dir: '%kernel.project_dir%/src/Entity'
         prefix: 'App\Entity'
         alias: App
+    metadata_cache_driver:
+      type: pool
+      pool: application.redis.cache
+    query_cache_driver:
+      type: pool
+      pool: application.redis.cache
+    result_cache_driver:
+      type: pool
+      pool: application.redis.cache

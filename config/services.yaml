@@ -38,7 +38,7 @@ services:
   App\Service\PizzaManagerInterface: '@pizza.manager'
 
   part.generator:
-    public: true
+    public: false
     autowire: true
     class: App\Service\ReceiptPartGenerateService
 
@@ -47,3 +47,14 @@ services:
   App\EventListeners\PizzaCreatedListener:
     tags:
       - {name: kernel.event_listener, event: pizza.created, method: onCreate}
+
+  App\Service\RemoteRequestInterface:
+    class: App\Service\RemoteRequestService
+    arguments:
+      $baseUrl: 'https://httpbin.org/'
+
+  app.cache.redis_provider:
+    class: Redis
+    factory: ['Symfony\Component\Cache\Adapter\RedisAdapter', 'createConnection']
+    arguments:
+      - '%env(REDIS_DSN)%'
