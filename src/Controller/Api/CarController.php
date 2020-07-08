@@ -35,33 +35,17 @@ class CarController
     }
 
     /**
-     * @Route("models/{page<\d+>?1}", name="api_models")
-     *
-     * @param int $page
-     *
-     * @return Response
-     */
-    public function index(int $page = 1): Response
-    {
-        $data = $this->manager->getRepository()->getPager($page, 10);
-        $format = 'json';
-
-        $serializedData = $this->serializer->serialize($data, $format, [
-            'groups' => 'display',
-        ]);
-
-        return new Response($serializedData, Response::HTTP_OK, [
-            'Content-Type' => \sprintf('%s; charset=utf-8', $format),
-        ]);
-    }
-
-    /**
-     * @Route("model/show/{id<\d+>?1}", name="api_model_show")
+     * @Route("model/show/{id<\d+>?1}", name="api_model_show", methods={"GET", "POST"})
      * @SWG\Response(
      *     response=200,
      *     description="Get Model by id",
      *     @\Nelmio\ApiDocBundle\Annotation\Model(type=Model::class)
      * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="Model witch this id not found",
+     * )
+     * @SWG\Tag(name="model by id")
      *
      * @param int $id
      *
@@ -89,15 +73,31 @@ class CarController
 
     /**
      * @Route("model/validate", name="api_json_validate", methods={"GET"})
+     *
      * @SWG\Response(
      *     response=200,
      *     description="Validate json data",
      *     @\Nelmio\ApiDocBundle\Annotation\Model(type=Model::class)
      * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Data is not valid",
+     * )
+     *
+     * @SWG\Parameter(
+     *     parameter="json",
+     *     name="json",
+     *     in="query",
+     *     type="string",
+     *     description="data for validate",
+     * )
+     * @SWG\Tag(name="validate json")
      *
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws \Exception
      */
     public function validate(Request $request): Response
     {

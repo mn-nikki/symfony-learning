@@ -38,13 +38,13 @@ class Model
     private ?int $price = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Manufacture::class, inversedBy="model", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Manufacture::class, inversedBy="models", cascade={"persist"})
      * @Groups({"display"})
      */
     private ?Manufacture $manufacture = null;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="Models", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="models", cascade={"persist"})
      * @Groups({"display"})
      */
     private Collection $colors;

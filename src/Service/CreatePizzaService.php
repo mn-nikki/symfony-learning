@@ -9,7 +9,6 @@ namespace App\Service;
 
 use App\Entity\Pizza;
 use App\Event\PizzaCreatedEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreatePizzaService implements CreatePizzaServiceInterface
@@ -43,13 +42,17 @@ class CreatePizzaService implements CreatePizzaServiceInterface
      */
     private EventDispatcherInterface $dispatcher;
 
-    public function __construct(ContainerInterface $container, EventDispatcherInterface $dispatcher)
+    /**
+     * CreatePizzaService constructor.
+     *
+     * @param EventDispatcherInterface            $dispatcher
+     * @param PizzaManagerInterface               $manager
+     * @param ReceiptPartGenerateServiceInterface $receiptPartGenerateService
+     */
+    public function __construct(EventDispatcherInterface $dispatcher, PizzaManagerInterface $manager, ReceiptPartGenerateServiceInterface $receiptPartGenerateService)
     {
-        /*
-         * Так можно "попросить" у контейнера сервисы, но лучше, конечно же, просить их в конструкторе.
-         */
-        $this->manager = $container->get('pizza.manager');
-        $this->receiptPartGenerateService = $container->get('part.generator');
+        $this->manager = $manager;
+        $this->receiptPartGenerateService = $receiptPartGenerateService;
         $this->dispatcher = $dispatcher;
     }
 
