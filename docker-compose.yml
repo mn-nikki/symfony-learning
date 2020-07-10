@@ -27,7 +27,7 @@ services:
   redis:
     image: redis:latest
 
-  postgres:
+  database:
     image: postgres:11-alpine
     ports:
       - 5432:5432
@@ -38,6 +38,7 @@ services:
       POSTGRES_USER: webmaster
       POSTGRES_DB: symfony_learn
       PGDATA: /var/lib/postgresql/data/pgdata
+
 volumes:
   database:
     driver: 'local'
