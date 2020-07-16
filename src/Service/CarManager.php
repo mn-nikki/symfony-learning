@@ -7,22 +7,26 @@ use App\Repository\ModelRepository;
 use App\Service\Exception\StorageException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use Psr\Log\LoggerInterface;
 
 class CarManager implements CarManagerInterface
 {
     private ModelRepository $repository;
     private EntityManagerInterface $em;
+    private LoggerInterface $logger;
 
     /**
      * CarManager constructor.
      *
      * @param ModelRepository        $repository
      * @param EntityManagerInterface $em
+     * @param LoggerInterface        $logger
      */
-    public function __construct(ModelRepository $repository, EntityManagerInterface $em)
+    public function __construct(ModelRepository $repository, EntityManagerInterface $em, LoggerInterface $logger)
     {
         $this->repository = $repository;
         $this->em = $em;
+        $this->logger = $logger;
     }
 
     /**
@@ -41,7 +45,10 @@ class CarManager implements CarManagerInterface
         $id = $model->getId();
 
         if ($id === null) {
-            throw new StorageException(\sprintf('Object with id = %s, was not found', $id));
+            $message = \sprintf('Object with id = %s, was not found', $id);
+
+            $this->logger->critical($message);
+            throw new StorageException($message);
         }
         $this->flushToStorage($model);
         $this->em->refresh($model);
@@ -57,7 +64,10 @@ class CarManager implements CarManagerInterface
         $id = $model->getId();
 
         if ($id === null) {
-            throw new StorageException(\sprintf('Object with id = %s, was not found', $id));
+            $message = \sprintf('Object with id = %s, was not found', $id);
+
+            $this->logger->critical($message);
+            throw new StorageException($message);
         }
         $this->removeToStorage($model);
 
@@ -72,7 +82,10 @@ class CarManager implements CarManagerInterface
         $id = $model->getId();
 
         if ($id !== null) {
-            throw new StorageException(\sprintf('Object with id = %s, already exists', $id));
+            $message = \sprintf('Object with id = %s, already exists', $id);
+
+            $this->logger->critical($message);
+            throw new StorageException($message);
         }
         $this->flushToStorage($model);
         $this->em->refresh($model);
@@ -89,6 +102,7 @@ class CarManager implements CarManagerInterface
             $this->em->persist($model);
             $this->em->flush();
         } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
             throw new StorageException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
@@ -102,6 +116,7 @@ class CarManager implements CarManagerInterface
             $this->em->remove($model);
             $this->em->flush();
         } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
             throw new StorageException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }

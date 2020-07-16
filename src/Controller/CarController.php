@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Model;
 use App\Form\ModelType;
 use App\Service\CarManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class CarController extends AbstractController
 {
     private CarManagerInterface $manager;
+    private LoggerInterface $logger;
 
-    public function __construct(CarManagerInterface $manager)
+    public function __construct(CarManagerInterface $manager, LoggerInterface $logger)
     {
         $this->manager = $manager;
+        $this->logger = $logger;
     }
 
     /**
@@ -30,11 +33,16 @@ class CarController extends AbstractController
     public function index(int $page = 1, int $count = 10): Response
     {
         $models = $this->manager->getRepository()->getPager($page, $count);
+        $maxPage = \ceil($models->count() / $count);
+
+        if ($page > $maxPage) {
+            $this->logger->critical(\sprintf('There is no page with this number - %s.', $page));
+        }
 
         return $this->render('path/index.html.twig', [
             'data' => $models,
             'page' => $page,
-            'maxPage' => \ceil($models->count() / $count),
+            'maxPage' => $maxPage,
         ]);
     }
 
@@ -95,6 +103,7 @@ class CarController extends AbstractController
      * @Route(path="/path/model/remove/{id<\d+>}", name="model_remove")
      *
      * @param int $id
+     *
      * @return Response
      */
     public function remove(int $id): Response
