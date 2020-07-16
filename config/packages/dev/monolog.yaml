@@ -8,7 +8,7 @@ monolog:
     stderr:
       type: stream
       path: "php://stderr"
-      level: debug
+      level: critical
     console:
       type: console
       process_psr_3_messages: false
