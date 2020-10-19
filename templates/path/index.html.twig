@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+  <h1>{{ 'model.title' | trans }}</h1>
+  <p>Страница <b>{{ page }}</b> из <b>{{ maxPage }}</b></p>
+  {% if(maxPage > 1) %}
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="{{ path('model_index', {page: page-1 < 1 ? 1 : page - 1}) }}">{{ 'paginate.prev' | trans }}</a></li>
+      <li class="page-item"><a class="page-link" href="{{ path('model_index', {page: page+1 < 1 ? 1 : page + 1}) }}">{{ 'paginate.next' | trans }}</a></li>
+    </ul>
+  {% endif %}
+  <div class="text-right mb-5"><a class="btn btn-secondary" href="{{ path("model_create") }}">{{ 'btn.new' | trans }}</a></div>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>{{ 'model.name' | trans }}</th>
+      <th>{{ 'model.manufacture' | trans }}</th>
+      <th>{{ 'model.colors' | trans }}</th>
+      <th>{{ 'model.price' | trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for model in data %}
+      <tr>
+        <td><a href="{{ path('model_view', { 'id': model.id }) }}">{{ model.name }}</a></td>
+        <td>
+            {{ model.manufacture.name }}
+        </td>
+        <td>
+          <ul class="list-unstyled">
+            {% for color in model.colors%}
+              <li>{{ color.name }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td>{{ model.price | number_format(0, '', ' ') }} Р</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

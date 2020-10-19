@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <h1>{{ 'model.name' | trans }}: <b>{{ model.name }}</b></h1>
+    <p class="lead">{{ 'model.manufacture' | trans }}: <b>{{ model.manufacture.name }}</b></p>
+    <p class="lead">{{ 'model.price' | trans }}: <b>{{ model.price | number_format(0, '', ' ') }} Р</b></p>
+    <p class="lead">{{ 'model.colors' | trans }}:</p>
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        {% for color in model.colors %}
+          <li class="list-group-item">{{ color.name }}</li>
+        {% endfor %}
+      </ul>
+      <div class="card-footer">
+        <a class="btn btn-dark" href="{{ path('model_update', {'id': model.id}) }}">{{ 'btn.update' | trans }}</a>
+        <a class="btn btn-danger ml-3" href="{{ path('model_remove', {'id': model.id}) }}">{{ 'btn.delete' | trans }}</a>
+      </div>
+    </div>
+    <p class="text-right mt-3"><a href="{{ path('model_index') }}">{{ 'btn.back' | trans }}</a></p>
+  </div>
+{% endblock %}

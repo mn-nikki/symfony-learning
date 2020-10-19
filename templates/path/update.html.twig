@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <h1>Изменить {{ model.name }}</h1>
+    {{ include('path/_form.html.twig') }}
+    <p class="text-right mt-3"><a href="{{ path('model_index') }}">{{ 'btn.back' | trans }}</a></p>
+  </div>
+{% endblock %}

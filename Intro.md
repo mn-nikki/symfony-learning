@@ -15,6 +15,29 @@ composer create-project symfony/skeleton symfony-learning
 - `symfony/test-pack` — phpUnit и расширения для тестирования;
 - `vimeo/psalm` и конфигурация `psalm.xml` — статический анализатор кода.
 
+Среда выполнения
+----------------
+
+Для начальных этапов достаточно встроенного php-сервера. Перейдите в каталог проекта и выполните команду
+
+```shell
+php -S 127.0.0.1:8000 -t public # 127.0.0.1 is your host, 8000 — port to listening, public — the web-root directory
+```
+
+Более продвинутый вариант того же сервера — исполняемый файл разработчиков symfony. Установка (MacOS):
+
+```shell
+curl -sS https://get.symfony.com/cli/installer | bash
+```
+
+Запуск сервера (из каталога приложения):
+
+```shell
+symfony local:server:start --port=8000
+```
+
+Расширенное описание и справку смотрите на сайте производителя — https://symfony.com/doc/current/setup/symfony_server.html или в стандартном `symfony local:server:start --help`
+
 Соглашения
 ----------
 
